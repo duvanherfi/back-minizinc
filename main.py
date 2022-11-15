@@ -32,6 +32,6 @@ async def solve():
     instance["A"] = range(3, 8)  # MiniZinc: 3..8
     instance["B"] = {4, 3, 2, 1, 0}  # MiniZinc: {4, 3, 2, 1, 0}
 
-    result = instance.solve()
+    result = await instance.solve()
     print(result)
     return result
