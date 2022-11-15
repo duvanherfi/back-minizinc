@@ -9,8 +9,8 @@ def root():
     return {"message": "Hello World"}
 
 
-@app.post("/solve")
-def model():
+@app.get("/solve")
+def solve():
     gecode = Solver.lookup("gecode")
 
     model = Model()
