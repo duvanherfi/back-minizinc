@@ -11,7 +11,7 @@ def root():
 
 @app.get("/solve")
 async def solve():
-    gecode = await Solver.lookup("gecode")
+    gecode = Solver.lookup("gecode")
 
     model = Model()
     model.add_string(
@@ -32,6 +32,6 @@ async def solve():
     instance["A"] = range(3, 8)  # MiniZinc: 3..8
     instance["B"] = {4, 3, 2, 1, 0}  # MiniZinc: {4, 3, 2, 1, 0}
 
-    result = await instance.solve()
+    result = instance.solve()
     print(result)
     return result
