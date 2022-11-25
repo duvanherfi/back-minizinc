@@ -11,6 +11,7 @@ def root():
 
 @app.get("/solve")
 def solve():
+    print("HOla")
     gecode = Solver.lookup("gecode")
 
     model = Model()
@@ -33,5 +34,4 @@ def solve():
     instance["B"] = {4, 3, 2, 1, 0}  # MiniZinc: {4, 3, 2, 1, 0}
 
     result = instance.solve()
-    print(result)
-    return result
+    return {'resultado': result["arr"]}
