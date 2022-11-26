@@ -19,19 +19,20 @@ def solve():
         """
         int: n;
         int: paginas;
+        var int:suma;
         
         array[1..n] of int: pagMin;
         array[1..n] of int: pagMax;
         array[1..n] of int: lectores;
-        
         array[1..n] of var int: cantidad;
         
         constraint forall(i in 1..n) (cantidad[i] >= 0 \/ cantidad[i] >= pagMin[i]);
         constraint forall(j in 1..n) (cantidad[j] <= pagMax[j]);
         constraint sum(k in 1..n) (cantidad[k]) = paginas;
-        solve maximize sum(l in 1..n) (cantidad[l] * lectores[l]);
+        constraint suma = sum(l in 1..n) (cantidad[l] * lectores[l]);
+        solve maximize suma;
         
-        output [\"datos:\", show(cantidad), \"\nlectores:\", show(sum(l in 1..n) (cantidad[l] * lectores[l]))]
+        output ["datos:", show(cantidad), "\nlectores:", show(suma)]
         """
     )
     n = 5;
