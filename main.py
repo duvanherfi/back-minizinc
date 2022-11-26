@@ -31,7 +31,7 @@ def solve():
         constraint sum(k in 1..n) (cantidad[k]) = paginas;
         solve maximize sum(l in 1..n) (cantidad[l] * lectores[l]);
         
-        output ["datos:", show(cantidad), "\n lectores:", show(sum(l in 1..n) (cantidad[l] * lectores[l]))]
+        output [\"datos:\", show(cantidad), \"\nlectores:\", show(sum(l in 1..n) (cantidad[l] * lectores[l]))]
         """
     )
     n = 5;
