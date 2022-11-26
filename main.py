@@ -47,7 +47,7 @@ def solve():
     instance["pagMax"] = pagMax
     instance["lectores"] = lectores
 
-
-    result = instance.solve()
+    print(instance)
+    result = instance.solve(all_solutions=True)
     print(result)
     return {'datos': result["datos"]}
