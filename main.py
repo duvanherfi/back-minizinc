@@ -17,21 +17,38 @@ def solve():
     model = Model()
     model.add_string(
         """
-        include "all_different.mzn";
-        set of int: A;
-        set of int: B;
-        array[A] of var B: arr;
-        var set of B: X;
-        var set of B: Y;
-
-        constraint all_different(arr);
-        constraint forall (i in index_set(arr)) ( arr[i] in X );
-        constraint forall (i in index_set(arr)) ( (arr[i] mod 2 = 0) <-> arr[i] in Y );
+        int: n;
+        int: paginas;
+        
+        array[1..n] of int: pagMin;
+        array[1..n] of int: pagMax;
+        array[1..n] of int: lectores;
+        
+        array[1..n] of var int: cantidad;
+        
+        constraint forall(i in 1..n) (cantidad[i] >= 0 \/ cantidad[i] >= pagMin[i]);
+        constraint forall(j in 1..n) (cantidad[j] <= pagMax[j]);
+        constraint sum(k in 1..n) (cantidad[k]) = paginas;
+        solve maximize sum(l in 1..n) (cantidad[l] * lectores[l]);
+        
+        output ["{datos:", show(cantidad), ",lectores:", show(sum(l in 1..n) (cantidad[l] * lectores[l])), "}"]
         """
     )
+    n = 5;
+    paginas = 10;
+
+    pagMin = [5, 4, 2, 2, 1];
+    pagMax = [9, 7, 5, 4, 3];
+    lectores = [1500, 2000, 1000, 1500, 750];
+
     instance = Instance(gecode, model)
-    instance["A"] = range(3, 8)  # MiniZinc: 3..8
-    instance["B"] = {4, 3, 2, 1, 0}  # MiniZinc: {4, 3, 2, 1, 0}
+    instance["n"] = n
+    instance["paginas"] = paginas
+    instance["pagMin"] = pagMin
+    instance["pagMax"] = pagMax
+    instance["lectores"] = lectores
+
 
     result = instance.solve()
-    return {'resultado': result["arr"]}
+    print(result)
+    return {'datos': result["datos"]}
