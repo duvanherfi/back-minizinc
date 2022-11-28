@@ -25,7 +25,7 @@ def root():
 def solve(data: Data = Body(embed=True)):
     print("HOla")
     print(data)
-    solver = Solver.lookup("chuffed")
+    solver = Solver.lookup("gecode")
 
     model = Model()
     model.add_string(
@@ -39,7 +39,7 @@ def solve(data: Data = Body(embed=True)):
         array[1..n] of var int: cantidad;
         
         constraint forall(i in 1..n) (cantidad[i] >= 0 \/ cantidad[i] >= pagMin[i]);
-        constraint forall(j in 1..n) (cantidad[j] <= pagMax[j]);
+        constraint forall(j in 1..n) (cantidad[j] >= 0 /\ cantidad[j] <= pagMax[j]);
         constraint sum(k in 1..n) (cantidad[k]) = paginas;
         solve maximize sum(l in 1..n) (cantidad[l] * lectores[l]);
         """
