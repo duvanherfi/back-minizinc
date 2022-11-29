@@ -33,7 +33,7 @@ def root():
 def solve(data: Data = Body(embed=True)):
     print("HOla")
     print(data)
-    solver = Solver.lookup("gecode")
+    solver = Solver.lookup("chuffed")
 
     model = Model()
     model.add_string(
