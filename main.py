@@ -1,6 +1,7 @@
 from minizinc import Instance, Model, Solver, error
 from fastapi import Body, FastAPI
 from pydantic import BaseModel
+from ast import literal_eval
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,22 +18,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Data(BaseModel):
-    n:int
-    paginas:int
-    pag_min:list
-    pag_max:list
-    lectores:list
-
 @app.get("/")
 def root():
     return {"message": "Hello World"}
 
 
 @app.post("/solve")
-def solve(data: Data = Body(embed=True)):
+def solve(body=Body()):
     print("HOla")
-    print(data)
+    print(body)
+    if isinstance(body, bytes):
+        body = literal_eval(body.decode('utf-8'))
+    
     solver = Solver.lookup("chuffed")
 
     model = Model()
@@ -54,11 +51,12 @@ def solve(data: Data = Body(embed=True)):
     )
 
     instance = Instance(solver, model)
-    instance["n"] = data.n
-    instance["paginas"] = data.paginas
-    instance["pagMin"] = data.pag_min
-    instance["pagMax"] = data.pag_max
-    instance["lectores"] = data.lectores
+
+    instance["n"] = body["n"]
+    instance["paginas"] = body["paginas"]
+    instance["pagMin"] = body["pag_min"]
+    instance["pagMax"] = body["pag_max"]
+    instance["lectores"] = body["lectores"]
 
     print(instance["paginas"])
     result = instance.solve()
